@@ -39,7 +39,7 @@ import {
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const roleIconMap = {
+const roleIconMap: Record<string, JSX.Element | null> = {
   "GUEST": null,
   "MODERATOR": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
   "ADMIN": <ShieldAlert className="h-4 w-4 text-rose-500" />
@@ -140,7 +140,7 @@ export const MembersModal = () => {
                         <DropdownMenuPortal>
                           <DropdownMenuSubContent>
                             <DropdownMenuItem
-                              onClick={() => onRoleChange(member.id, "GUEST")}
+                              onClick={() => onRoleChange(member.id, MemberRole.GUEST)}
                             >
                               <Shield className="h-4 w-4 mr-2" />
                               Guest
@@ -151,7 +151,7 @@ export const MembersModal = () => {
                               )}
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onClick={() => onRoleChange(member.id, "MODERATOR")}
+                              onClick={() => onRoleChange(member.id, MemberRole.MODERATOR)}
                             >
                               <ShieldCheck className="h-4 w-4 mr-2" />
                               Moderator

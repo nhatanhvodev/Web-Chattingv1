@@ -5,7 +5,7 @@ import axios from "axios";
 import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Member, MemberRole as MemberRoleType, Profile } from "@prisma/client";
+import { Member, Profile } from "@prisma/client";
 import { MemberRole } from "@/types";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
 import Image from "next/image";
@@ -40,7 +40,7 @@ interface ChatItemProps {
   socketQuery: Record<string, string>;
 };
 
-const roleIconMap = {
+const roleIconMap: Record<string, JSX.Element | null> = {
   "GUEST": null,
   "MODERATOR": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
   "ADMIN": <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,

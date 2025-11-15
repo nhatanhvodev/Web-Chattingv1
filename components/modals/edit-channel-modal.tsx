@@ -54,18 +54,18 @@ export const EditChannelModal = () => {
   const isModalOpen = isOpen && type === "editChannel";
   const { channel, server } = data;
  
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channel?.type || ChannelType.TEXT,
+      type: (channel?.type as ChannelType) || ChannelType.TEXT,
     }
   });
 
   useEffect(() => {
    if (channel) {
     form.setValue("name", channel.name);
-    form.setValue("type", channel.type);
+    form.setValue("type", channel.type as ChannelType);
    }
   }, [form, channel]);
 
