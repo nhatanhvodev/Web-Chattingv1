@@ -4,7 +4,16 @@ import { authMiddleware } from "@clerk/nextjs";
 // Please edit this to allow other routes to be public as needed.
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your middleware
 export default authMiddleware({
-  publicRoutes: ["/api/uploadthing"]
+  publicRoutes: [
+    "/", // trang root
+    "/sign-in(.*)",
+    "/sign-up(.*)",
+    "/invite(.*)", // cho phép user click link invite chưa đăng nhập -> chuyển sang sign-in rồi quay lại
+    "/api/uploadthing"
+  ],
+  ignoredRoutes: [
+    "/api/socket(.*)" // socket không cần auth middleware
+  ]
 });
  
 export const config = {
