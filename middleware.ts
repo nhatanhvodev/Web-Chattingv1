@@ -5,14 +5,14 @@ import { authMiddleware } from "@clerk/nextjs";
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your middleware
 export default authMiddleware({
   publicRoutes: [
-    "/", // trang root
-    "/sign-in(.*)",
-    "/sign-up(.*)",
-    "/invite(.*)", // cho phép user click link invite chưa đăng nhập -> chuyển sang sign-in rồi quay lại
-    "/api/uploadthing"
+   "/",
+   "/sign-in(.*)",
+   "/sign-up(.*)",
+   "/invite(.*)",
+   "/api/uploadthing"
   ],
   ignoredRoutes: [
-    "/api/socket(.*)" // socket không cần auth middleware
+   "/api/socket(.*)"
   ]
 });
  

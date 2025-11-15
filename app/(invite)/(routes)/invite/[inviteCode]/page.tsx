@@ -1,4 +1,4 @@
-import { redirectToSignIn } from "@clerk/nextjs";
+// Use local sign-in route to avoid Clerk absolute URL issue on server
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -16,7 +16,7 @@ const InviteCodePage = async ({
   const profile = await currentProfile();
 
   if (!profile) {
-    return redirectToSignIn();
+    return redirect("/sign-in");
   }
 
   if (!params.inviteCode) {
