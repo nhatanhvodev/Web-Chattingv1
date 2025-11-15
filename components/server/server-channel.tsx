@@ -2,10 +2,9 @@
 
 import { 
   Channel, 
-  ChannelType, 
-  MemberRole,
   Server
 } from "@prisma/client";
+import { ChannelType, MemberRole } from "@/types";
 import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 

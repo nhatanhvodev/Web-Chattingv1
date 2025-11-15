@@ -13,7 +13,7 @@ import {
   ShieldQuestion
 } from "lucide-react";
 import { useState } from "react";
-import { MemberRole } from "@prisma/client";
+import { MemberRole } from "@/types";
 import { useRouter } from "next/navigation";
 
 import {

@@ -29,12 +29,30 @@ export const InviteModal = () => {
   const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
 
   const onCopy = () => {
-    navigator.clipboard.writeText(inviteUrl);
-    setCopied(true);
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(inviteUrl);
+      setCopied(true);
 
-    setTimeout(() => {
-      setCopied(false);
-    }, 1000);
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000);
+    } else {
+      // Fallback cho trường hợp clipboard không khả dụng
+      const textArea = document.createElement("textarea");
+      textArea.value = inviteUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 1000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+      document.body.removeChild(textArea);
+    }
   };
 
   const onNew = async () => {

@@ -7,7 +7,7 @@ export const useOrigin = () => {
     setMounted(true);
   }, []);
 
-  const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : "";
+  const origin = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== "undefined" && window.location.origin ? window.location.origin : "");
 
   if (!mounted) {
     return "";

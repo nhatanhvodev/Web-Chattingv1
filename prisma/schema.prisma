@@ -3,17 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Profile {
   id String @id @default(uuid())
   userId String @unique
   name String
-  imageUrl String @db.Text
-  email String @db.Text
+  imageUrl String
+  email String
 
   servers Server[]
   members Member[]
@@ -26,7 +25,7 @@ model Profile {
 model Server {
   id String @id @default(uuid())
   name String
-  imageUrl String @db.Text
+  imageUrl String
   inviteCode String @unique
 
   profileId String
@@ -37,19 +36,11 @@ model Server {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([profileId])
-}
-
-enum MemberRole {
-  ADMIN
-  MODERATOR
-  GUEST
 }
 
 model Member {
   id String @id @default(uuid())
-  role MemberRole @default(GUEST)
+  role String @default("GUEST")
 
   profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -65,21 +56,12 @@ model Member {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([profileId])
-  @@index([serverId])
-}
-
-enum ChannelType {
-  TEXT
-  AUDIO
-  VIDEO
 }
 
 model Channel {
   id String @id @default(uuid())
   name String
-  type ChannelType @default(TEXT)
+  type String @default("TEXT")
 
   profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -91,16 +73,13 @@ model Channel {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([profileId])
-  @@index([serverId])
 }
 
 model Message {
   id String @id @default(uuid())
-  content String @db.Text
+  content String
 
-  fileUrl String? @db.Text
+  fileUrl String?
 
   memberId String
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
@@ -112,9 +91,6 @@ model Message {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([channelId])
-  @@index([memberId])
 }
 
 model Conversation {
@@ -128,15 +104,13 @@ model Conversation {
 
   directMessages DirectMessage[]
 
-  @@index([memberTwoId])
-
   @@unique([memberOneId, memberTwoId])
 }
 
 model DirectMessage {
   id String @id @default(uuid())
-  content String @db.Text
-  fileUrl String? @db.Text
+  content String
+  fileUrl String?
 
   memberId String
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
@@ -148,7 +122,4 @@ model DirectMessage {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([memberId])
-  @@index([conversationId])
 }
