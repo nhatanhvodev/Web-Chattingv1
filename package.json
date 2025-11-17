@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "electron:dev": "electron ./electron/main.js",
+    "dev:desktop": "concurrently \"npm run dev\" \"npm run electron:dev\"",
+    "desktop:build": "npm run build && electron-builder"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.23.2",
@@ -64,6 +67,23 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",
-    "prisma": "^5.1.1"
+    "prisma": "^5.1.1",
+    "electron": "^28.2.0",
+    "electron-builder": "^24.6.0",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+    ,"dotenv": "^16.3.1"
+  },
+  "build": {
+    "appId": "com.discordclone.desktop",
+    "productName": "WebChatting",
+    "files": [
+      "electron/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    }
   }
 }
