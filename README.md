@@ -80,29 +80,59 @@ Running commands with npm `npm run [command]`
 
 ## Desktop (Electron)
 
-### Phát triển Desktop
+### Socket Server Riêng (Khuyến Nghị)
 
-1. Đảm bảo web dev chạy bình thường: `npm run dev:desktop` sẽ chạy song song Next.js (cổng 3000) và Electron.
-2. Electron sẽ load `http://localhost:3000` ở chế độ dev.
+Do Next.js API routes không ổn định với WebSocket trên Render, đã tạo socket server riêng trong `socket-server.js`.
+
+**Xem hướng dẫn chi tiết:** [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+### Phát triển Desktop Local
 
 ```shell
+# Terminal 1: Next.js dev server
+npm run dev
+
+# Terminal 2: Socket server
+npm run socket:dev
+
+# Terminal 3: Electron
 npm run dev:desktop
 ```
 
-### Build Desktop (Windows / macOS / Linux)
+Thêm vào `.env`:
+```
+NEXT_PUBLIC_SOCKET_URL=http://localhost:4001
+DESKTOP_PROD_URL=http://localhost:3000
+```
 
-1. Thiết lập biến môi trường `DESKTOP_PROD_URL` trong file `.env` trỏ tới domain Render đã deploy (ví dụ: `https://your-render-domain.onrender.com`).
-2. Chạy build:
+### Build Desktop Production
 
 ```shell
-setx DESKTOP_PROD_URL "https://your-render-domain.onrender.com"
+# Đóng tất cả process
+Get-Process electron,node -ErrorAction SilentlyContinue | Stop-Process -Force
+
+# Xóa dist cũ
+Remove-Item -Path dist -Recurse -Force -ErrorAction SilentlyContinue
+
+# Build
 npm run desktop:build
 ```
 
-Output installer / artifact sẽ nằm trong thư mục `dist/` (electron-builder mặc định). Bạn có thể phân phối file `.exe` (Windows) hoặc `.dmg`/`.AppImage`.
+Output: `dist/win-unpacked/WebChatting.exe`
 
-### Ghi chú
+### Triển Khai Production
 
-- Hiện tại app desktop tải giao diện từ server Render (cần mạng). Để hỗ trợ offline, cần đóng gói build Next.js và phục vụ qua một HTTP server nội bộ hoặc chuyển sang static export nếu phù hợp logic.
-- Có thể bổ sung: auto-update, tray icon, native notifications.
-- Thay `YOUR-RENDER-DOMAIN` trong `electron/main.js` bằng domain thực tế.
+1. **Tạo Socket Service trên Render:**
+   - Build: `npm install`
+   - Start: `node socket-server.js`
+   - ENV: `CORS_ORIGIN=https://web-chatting-tmnv.onrender.com`
+
+2. **Cập nhật App Chính:**
+   - Thêm ENV: `NEXT_PUBLIC_SOCKET_URL=https://your-socket-service.onrender.com`
+   - Redeploy
+
+3. **Desktop App:**
+   - Cập nhật `.env`: `DESKTOP_PROD_URL=https://web-chatting-tmnv.onrender.com`
+   - Build và phân phối `.exe`
+
+Chi tiết đầy đủ xem [DEPLOYMENT.md](./DEPLOYMENT.md).

@@ -19,14 +19,31 @@ function createWindow() {
     },
   });
 
-  const prodUrl = process.env.DESKTOP_PROD_URL; // set in .env or system env when building
+  // Strip quotes from env variable if present
+  const prodUrl = process.env.DESKTOP_PROD_URL ? process.env.DESKTOP_PROD_URL.replace(/"/g, '') : null;
+  const defaultProdUrl = 'https://web-chatting-tmnv.onrender.com'; // Hardcode production URL
   const urlToLoad = process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : (prodUrl || 'https://YOUR-RENDER-DOMAIN');
+    : (prodUrl || defaultProdUrl);
 
   console.log('Electron loading URL:', urlToLoad);
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+  
   win.loadURL(urlToLoad);
   win.webContents.openDevTools();
+
+  // Debug events
+  win.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+    console.error('Failed to load:', errorCode, errorDescription, validatedURL);
+  });
+
+  win.webContents.on('did-finish-load', () => {
+    console.log('Page loaded successfully');
+  });
+
+  win.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    console.log('Console:', message);
+  });
 }
 
 app.whenReady().then(() => {

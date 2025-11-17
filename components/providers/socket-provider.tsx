@@ -31,9 +31,18 @@ export const SocketProvider = ({
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketInstance = new (ClientIO as any)(process.env.NEXT_PUBLIC_SITE_URL!, {
-      path: "/api/socket/io",
+    const envSite = process.env.NEXT_PUBLIC_SITE_URL;
+    const envApp = process.env.NEXT_PUBLIC_APP_URL;
+    const customSocket = process.env.NEXT_PUBLIC_SOCKET_URL; // URL for standalone socket server
+    const baseUrl = customSocket || envSite || envApp || (typeof window !== 'undefined' ? window.location.origin : '');
+    const useCustomServer = !!customSocket;
+
+    const socketInstance = new (ClientIO as any)(baseUrl, {
+      path: useCustomServer ? '/socket.io' : '/api/socket/io',
       addTrailingSlash: false,
+      transports: ["websocket", "polling"],
+      reconnectionAttempts: 5,
+      timeout: 15000,
     });
 
     socketInstance.on("connect", () => {
