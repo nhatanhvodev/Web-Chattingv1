@@ -76,15 +76,15 @@ export const ChatItem = ({
   }
 
   useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if (event.key === "Escape" || event.keyCode === 27) {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" || event.key === "Esc" || event.keyCode === 27) {
         setIsEditing(false);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
-    return () => window.removeEventListener("keyDown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -116,7 +116,7 @@ export const ChatItem = ({
     form.reset({
       content: content,
     })
-  }, [content]);
+  }, [content, form]);
 
   const fileType = fileUrl?.split(".").pop();
 
