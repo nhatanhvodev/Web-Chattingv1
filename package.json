@@ -2,6 +2,8 @@
   "name": "discord-clone",
   "version": "0.1.0",
   "private": true,
+  "description": "Web Chatting desktop app",
+  "author": "nhatanhvodev",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -9,7 +11,10 @@
     "lint": "next lint",
     "electron:dev": "electron ./electron/main.js",
     "dev:desktop": "concurrently \"npm run dev\" \"npm run electron:dev\"",
-    "desktop:build": "npm run build && electron-builder"
+    "desktop:build": "npm run build && electron-builder",
+    "socket:dev": "node socket-server.js",
+    "desktop:prod": "cross-env NODE_ENV=production npx electron ./electron/main.js",
+    "desktop:dir": "npm run build && electron-builder --dir"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.23.2",
@@ -66,13 +71,13 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.2",
-    "prisma": "^5.1.1",
+    "@types/uuid": "^9.0.8",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
     "electron": "^28.2.0",
     "electron-builder": "^24.6.0",
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3"
-    ,"dotenv": "^16.3.1"
+    "prisma": "^5.1.1"
   },
   "build": {
     "appId": "com.discordclone.desktop",
