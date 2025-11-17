@@ -26,7 +26,9 @@ const io = new Server(server, {
   path: '/socket.io',
   cors: {
     origin: (origin, cb) => {
+      console.log('Socket handshake origin:', origin);
       if (!origin || ALLOWED.includes('*') || ALLOWED.includes(origin)) return cb(null, origin);
+      console.warn('Blocked socket origin:', origin);
       return cb(new Error('Origin not allowed'));
     },
     methods: ['GET','POST'],
