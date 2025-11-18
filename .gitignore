@@ -37,3 +37,11 @@ next-env.d.ts
 
 # electron
 dist/
+
+# database backup files
+*.backup
+*.dump
+counts.sql
+
+# fly.io
+.fly/

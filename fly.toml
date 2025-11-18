@@ -1,0 +1,34 @@
+# fly.toml cho socket server
+
+app = 'web-chatting-socket'
+primary_region = 'sjc' # San Jose (gần Vercel US-West nếu chọn)
+
+[build]
+  [build.args]
+    NODE_VERSION = "20"
+
+[env]
+  PORT = "8080"
+  NODE_ENV = "production"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'suspend'
+  auto_start_machines = true
+  min_machines_running = 0 # Free tier: sleep khi không dùng
+  processes = ['app']
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/health"
+
+[processes]
+  app = "node socket-server.js"
+
+[[vm]]
+  size = 'shared-cpu-1x' # Free tier
+  memory = '256mb'
