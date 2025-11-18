@@ -1,0 +1,32 @@
+# fly.toml generated for the standalone socket service
+# Update the "app" name to your Fly.io application slug before deploying.
+
+app = "Zolo-socket"
+primary_region = "sin"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+
+[[services]]
+  internal_port = 8080
+  processes = ["app"]
+
+  [services.concurrency]
+    hard = 50
+    soft = 25
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "2s"
+

@@ -1,34 +1,29 @@
-# fly.toml cho socket server
+# fly.toml app configuration file generated for web-chatting-socket on 2025-11-18T11:01:42+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
 app = 'web-chatting-socket'
-primary_region = 'sjc' # San Jose (gần Vercel US-West nếu chọn)
+primary_region = 'sjc'
 
 [build]
-  [build.args]
-    NODE_VERSION = "20"
+  dockerfile = 'Dockerfile.socket'
 
 [env]
-  PORT = "8080"
-  NODE_ENV = "production"
+  NODE_ENV = 'production'
+  PORT = '8080'
+
+[processes]
+  app = 'node socket-server.js'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = 'suspend'
+  auto_stop_machines = false
   auto_start_machines = true
-  min_machines_running = 0 # Free tier: sleep khi không dùng
+  min_machines_running = 1
   processes = ['app']
 
-  [[http_service.checks]]
-    grace_period = "10s"
-    interval = "30s"
-    method = "GET"
-    timeout = "5s"
-    path = "/health"
-
-[processes]
-  app = "node socket-server.js"
-
 [[vm]]
-  size = 'shared-cpu-1x' # Free tier
+  size = 'shared-cpu-1x'
   memory = '256mb'

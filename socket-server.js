@@ -1,7 +1,9 @@
 // Simple standalone Socket.IO server to bypass Next.js API 500 issues on Render
 // Run locally: npm run socket:dev
 // Deploy: create a separate service on Render using `node socket-server.js`
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const http = require('http');
 const { Server } = require('socket.io');
 
@@ -45,6 +47,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Standalone Socket.IO listening on http://localhost:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Standalone Socket.IO listening on http://0.0.0.0:${PORT}`);
 });
