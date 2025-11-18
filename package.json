@@ -69,10 +69,10 @@
     "uploadthing": "^5.3.3",
     "uuid": "^9.0.0",
     "zod": "^3.22.2",
-    "zustand": "^4.4.1"
+    "zustand": "^4.4.1",
+    "@types/uuid": "^9.0.8"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.8",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "electron": "^28.2.0",
