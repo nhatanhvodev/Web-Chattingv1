@@ -45,4 +45,6 @@ io.on('connection', socket => {
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`[Socket] Listening on 0.0.0.0:${PORT}`);
+  console.log(`[Socket] Health check: GET http://0.0.0.0:${PORT}/health`);
+  console.log(`[Socket] Ready to accept connections`);
 });
