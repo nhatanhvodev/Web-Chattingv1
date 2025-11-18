@@ -21,7 +21,7 @@ function createWindow() {
 
   // Strip quotes from env variable if present
   const prodUrl = process.env.DESKTOP_PROD_URL ? process.env.DESKTOP_PROD_URL.replace(/"/g, '') : null;
-  const defaultProdUrl = 'https://web-chatting-tmnv.onrender.com'; // Hardcode production URL
+  const defaultProdUrl = 'https://zolo-livid.vercel.app'; // Hardcode production URL
   const urlToLoad = process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
     : (prodUrl || defaultProdUrl);
