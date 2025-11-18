@@ -1,0 +1,14 @@
+{
+  "name": "socket-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone Socket.IO service for chat app",
+  "main": "socket-server.js",
+  "scripts": {
+    "start": "node socket-server.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.7.2",
+    "dotenv": "^17.2.3"
+  }
+}
